@@ -1,0 +1,110 @@
+---
+title: Platform Configuration
+description: Learn how to tailor VEC Fleet to your specific fleet needs, including settings for alerts, users, and reports.
+---
+
+## Overview
+
+VEC Fleet provides flexible configuration options to match your fleet operations. Customize user roles for secure access control, set up alerts for maintenance and fuel issues, and tailor reports for your business insights. Access these settings from the main dashboard under the `{gear}` icon.
+
+<Columns cols={3}>
+  <Card title="User Roles" icon="users" href="#user-roles">
+    Define permissions for drivers, managers, and admins.
+  </Card>
+  <Card title="Alerts" icon="bell" href="#alerts">
+    Configure notifications for vehicle issues.
+  </Card>
+  <Card title="Reports" icon="bar-chart-3" href="#reports">
+    Customize and export fleet data.
+  </Card>
+</Columns>
+
+## User Roles and Permissions
+
+Assign roles to control what team members see and do in VEC Fleet. Start by navigating to **Settings > Users > Roles**.
+
+<Steps>
+  <Step title="Create a Role" icon="user-plus">
+    Click **New Role**, enter a name like `Fleet Manager`, and select permissions.
+  </Step>
+  <Step title="Assign Permissions" icon="shield">
+    Toggle options such as **View Reports** or **Edit Vehicles**.
+
+    | Permission          | Description                          |
+    |---------------------|--------------------------------------|
+    | View Vehicles       | Access vehicle lists and details     |
+    | Edit Maintenance    | Schedule and update services         |
+    | Export Reports      | Download custom reports              |
+    | Manage Users        | Add or remove team members           |
+  </Step>
+  <Step title="Apply to Users" icon="check-circle">
+    Go to **Users**, select a user, and assign the role.
+  </Step>
+</Steps>
+
+<Callout kind="tip">
+  Use the `Admin` role sparingly to maintain security.
+</Callout>
+
+## Custom Alerts and Notifications
+
+Set up alerts for events like low fuel or overdue maintenance. VEC Fleet supports multiple channels.
+
+<Tabs>
+  <Tab title="Email Alerts" icon="mail">
+    <Steps>
+      <Step title="Enable Email" icon="settings">
+        In **Alerts > Channels**, toggle **Email** and add addresses like `fleet@yourcompany.com`.
+      </Step>
+      <Step title="Define Triggers">
+        Create rules: Fuel `<20%` or Odometer `>50000 km`.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="SMS Alerts" icon="phone">
+    Configure your SMS provider in **Integrations > SMS**.
+
+    ```json
+    {
+      "provider": "twilio",
+      "accountSid": "YOUR_ACCOUNT_SID",
+      "authToken": "YOUR_AUTH_TOKEN"
+    }
+    ```
+
+    Set triggers for critical issues like engine faults.
+  </Tab>
+</Tabs>
+
+## Report Customization and Export Options
+
+Build reports for fuel efficiency, maintenance costs, or vehicle utilization. Access via **Reports > Custom**.
+
+<ExpandableGroup>
+  <Expandable title="Basic Customization" default-open="true">
+    Select metrics like `total km driven` or `fuel per 100km`. Filter by vehicle ID, such as `Truck-456`.
+
+    <CodeGroup tabs="JSON Config,CLI Export">
+      ```json
+      {
+        "reportType": "monthly",
+        "metrics": ["fuelConsumption", "maintenanceCost"],
+        "vehicles": ["Truck-456", "Van-789"]
+      }
+      ```
+
+      ```bash
+      vecfleet export --report monthly --format csv --output fleet-report.csv
+      ```
+    </CodeGroup>
+  </Expandable>
+  <Expandable title="Advanced Scheduling">
+    Schedule automated exports to Google Drive or email.
+
+    Use cron-like syntax: `0 9 * * 1` for weekly Monday reports at 9 AM.
+  </Expandable>
+</ExpandableGroup>
+
+<Callout kind="success">
+  Test configurations with sample data from your first 10 vehicles to ensure accuracy.
+</Callout>
